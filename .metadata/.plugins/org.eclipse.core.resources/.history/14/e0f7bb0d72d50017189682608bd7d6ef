@@ -1,0 +1,86 @@
+//Solution for https://www.codewars.com/kata/585894545a8a07255e0002f1/train/java
+
+import java.util.Arrays;
+
+public class ScreenLock {
+
+	public static final int[][] adj =	{{1,3,4,-2,1,2,-2,3,6,-2,4,8,-1},
+							 	{0,2,3,4,5,-2,4,7,-1},
+							 	{1,4,5,-2,1,0,-2,4,6,-2,5,8,-1},
+							 	{0,1,4,6,7,-2,4,5,-1},
+							 	{0,1,2,3,5,6,7,8,-1},
+							 	{1,2,4,7,8,-2,4,3,-1},
+							 	{3,4,7,-2,3,0,-2,4,2,-2,7,8,-1},
+							 	{3,4,5,6,8,-2,4,1,-1},
+							 	{4,5,7,-2,4,0,-2,5,2,-2,7,6,-1}};
+	
+	public static int calculateCombinations(char startPosition, int patternLength){
+
+		if(patternLength < 1 || patternLength > 10)
+			return 0;
+		
+		int count = 0;
+		int[] usedLetters = new int[patternLength];
+		Arrays.fill(usedLetters, 0);
+		usedLetters[0] = (int) startPosition - 65;
+		boolean from_backtrack = false;
+		int pos = 0;
+		int i = -1;
+		
+		while(true){
+			while(pos < patternLength && pos != 0){
+				if(!from_backtrack){
+					pos++;
+					if(pos == patternLength)
+						break;
+					i = -1;
+				}
+				from_backtrack = false;
+				while(usedLetters[pos] != -1){
+					usedLetters[pos] = adj[usedLetters[pos-1]][++i];
+					while(usedLetters[pos] == -2)
+						usedLetters[pos] = adj[usedLetters[pos-1]][++i];
+						if(containsEleAtPos(usedLetters, pos)){
+							usedLetters[pos] = adj[usedLetters[pos-1]][++i];
+						}
+						else{
+							i+=2;
+							usedLetters[pos] = adj[usedLetters[pos-1]][i];
+						}
+					if(usedLetters[pos] == -1){
+						pos--;
+						if(pos == 0)
+							return count;
+						from_backtrack = true;
+					}
+					else
+						if(isValid(usedLetters, pos))
+							count++;
+				}
+			}
+			pos--;
+			from_backtrack = true;
+		}
+			
+	}
+	
+	public static boolean isValid(int[] arr, int pos){
+		int i = 0;
+		while(i < pos){
+			if(arr[i] == arr[pos])
+				return false;
+			i++;
+		}
+		return true;
+	}
+	
+	public static boolean containsEleAtPos(int[] arr, int pos){
+		int i = 0;
+		while(i < pos){
+			if(arr[i] == arr[pos])
+				return true;
+			i++;
+		}
+		return false;
+	}
+}
