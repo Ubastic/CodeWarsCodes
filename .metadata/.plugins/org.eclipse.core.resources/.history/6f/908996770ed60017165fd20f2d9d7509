@@ -1,0 +1,41 @@
+// Solution for https://www.codewars.com/kata/54c1bf903f0696f04600068b/train/java
+
+public class Machine {
+
+	private final CPU cpu;
+	
+	public Machine(CPU cpu) {
+		this.cpu = cpu;
+	}
+	
+	public void exec(String instr) {
+		
+		String[] instrParts = instr.split(" ");
+		if(instrParts[0].equals("push")){
+			if(instrParts[1].equals('a' | 'b' | 'c' | 'd'))
+				cpu.writeStack(cpu.readReg(instrParts[1]));
+			else
+				cpu.writeStack(Integer.parseInt(instrParts[1]));
+		}
+		else if(instrParts[0].equals("pop")){
+			if(instrParts.length == 1)
+				int x = cpu.popStack();
+			else
+				cpu.writeReg(instrParts[1], cpu.popStack());
+		}
+		else if(instrParts[0].equals("pushr")){
+			cpu.writeStack(cpu.readReg("a"));
+			cpu.writeStack(cpu.readReg("b"));
+			cpu.writeStack(cpu.readReg("c"));
+			cpu.writeStack(cpu.readReg("d"));
+		}
+		else if(instrParts[0].equals("pushrr")){
+			cpu.writeStack(cpu.readReg("d"));
+			cpu.writeStack(cpu.readReg("c"));
+			cpu.writeStack(cpu.readReg("b"));
+			cpu.writeStack(cpu.readReg("a"));
+		}
+				
+	}
+	
+}

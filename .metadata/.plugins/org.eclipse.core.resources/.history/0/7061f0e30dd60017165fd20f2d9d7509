@@ -1,0 +1,15 @@
+// Solution for https://www.codewars.com/kata/54c1bf903f0696f04600068b/train/java
+
+public class Machine {
+
+	private final CPU cpu;
+	
+	public Machine(CPU cpu) {
+		this.cpu = cpu;
+	}
+	
+	public void exec(String instr) {
+		
+	}
+	
+}

@@ -1,0 +1,29 @@
+
+public class Main {
+
+	public static void main(String[] args){
+		
+		int[] arr = {11,12,1,6};
+		String temp = Integer.toBinaryString(arr[0]);
+		String tempA = "";
+		for(int i = 0; i < 4 - temp.length(); i++){
+			tempA += "0";
+		}
+		tempA += temp;
+		temp = tempA;
+		for(int i = 1; i < arr.length; i++){
+			String next = Integer.toBinaryString(arr[i]);
+			String tempB = "";
+			for(int k = 0; k < 4 - temp.length(); k++)
+				tempB += "0";
+			tempB += next;
+			next = tempB;
+			String newTemp = "";
+			for(int j = 0; j < 4; j++)
+				System.out.println(Integer.toString(Integer.parseInt(Character.toString(temp.charAt(j))) ^ Integer.parseInt(Character.toString(next.charAt(j)))));
+			temp = newTemp;
+		}
+		System.out.println(temp);
+	}
+	
+}
