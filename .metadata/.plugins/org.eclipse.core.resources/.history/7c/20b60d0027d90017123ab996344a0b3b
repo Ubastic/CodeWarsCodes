@@ -1,0 +1,51 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class test {
+
+	public static String part(long n) {
+		
+		ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>((int)n+1);
+		for(int q = 0; q < (int)n + 1; q++)
+			array.add(new ArrayList<String>(0));
+		ArrayList<String> enumZero = new ArrayList<String>(1);
+		enumZero.add("");
+		array.add(0,enumZero);
+		for(int i = 1; i <= n; i++)
+			for(int j = 1; j <= i; j++)
+				for(int k = 0; k < (array.get(i-j)).size(); k++){
+					//break apart string and add #
+					String[] parts = (array.get(i-j)).get(k).split(",");
+					parts[parts.length] = Integer.toString(j);
+					//insertion sort
+					int l = parts.length;
+					while(l > 1 && parts[l-2].compareTo(parts[l-1]) > 0){
+						String tempA = parts[l-2];
+						parts[l-2] = parts[l-1];
+						parts[l-1] = tempA;
+						l--;
+					}
+					//put parts back together into array
+					String tempB = parts[0];
+					for(int m = 1; m < parts.length; m++)
+						tempB += "," + parts[m];
+					//If you don't find tempB in the array add to array insertion sort
+					if(!(array.get(i)).contains(tempB)){
+						(array.get(i)).add(tempB);
+						(array.get(i)).sort(StringComparator);
+					}
+				}
+		printArray(array);
+		return "";
+	}
+	
+	public static void printArray(String arr[][]){
+		for(int i = 0; i < arr.length; i++){
+			System.out.println("Enum of " + i);
+			for(int j = 0; j < arr[i].length; j++)
+				System.out.println(arr[i][j]);
+			System.out.println("\n");
+		}
+	}
+	
+}
