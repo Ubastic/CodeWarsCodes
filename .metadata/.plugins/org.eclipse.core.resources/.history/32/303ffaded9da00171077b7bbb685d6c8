@@ -1,0 +1,29 @@
+
+public class InfiniteDigitalString {
+
+	public static long findPosition(final String s){
+		String infStr = "";
+		long count = 1;
+		int index = 0;
+		int countingIndex = 0;
+		while(true){
+			while(infStr.length() < 100){
+				infStr += Long.toString(count);
+			}
+			System.out.println(infStr);
+			while(countingIndex < infStr.length() - s.length()){
+				for(int i = 0; i < s.length(); i++){
+					if(infStr.charAt(countingIndex + i) != s.charAt(i))
+						break;
+					if(i == s.length() - 1)
+						return index;
+				}
+				index++;
+				countingIndex++;
+			}
+			infStr = infStr.substring(countingIndex);
+			countingIndex = 0;
+		}
+	}
+	
+}
