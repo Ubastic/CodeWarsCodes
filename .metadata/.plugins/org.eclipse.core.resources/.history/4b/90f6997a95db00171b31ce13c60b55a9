@@ -1,0 +1,27 @@
+
+public class test {
+
+	public static String fillInAndConsecutive(String a, String prev){
+		//if matches return calcPosition(Integer.parseInt(a))
+		int i = 0;
+		while(true){
+			if(prev.charAt(i) != 'x')
+				break;
+			else 
+				i++;
+		}
+		int num = Integer.parseInt(prev.substring(i)) + 1;
+		System.out.println(num);
+		String numStr = Integer.toString(num);
+		for(int j = numStr.length() - 1, k = a.length() - 1; j >= 0; j--, k--){
+			//System.out.println("numStr.charAt(" + j + ") is: " + numStr.charAt(j));
+			//System.out.println("a.charAt(" + k + ") is: " + a.charAt(k));
+			if(a.charAt(k) != 'x' && numStr.charAt(j) != a.charAt(k))
+				return "failed";
+		}
+		String returnStr = a.substring(0,a.length()-numStr.length());
+		returnStr += numStr;
+		return returnStr;
+	}
+	
+}
