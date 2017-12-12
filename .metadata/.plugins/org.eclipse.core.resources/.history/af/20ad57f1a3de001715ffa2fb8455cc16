@@ -1,0 +1,16 @@
+
+public class Main {
+
+	public static void main(String[] args){
+		String s = "easy";
+		byte[] data = s.getBytes();
+		System.out.println(Ascii85.toAscii85(data));
+		s = "moderate";
+		data = s.getBytes();
+		System.out.println(Ascii85.toAscii85(data));
+		s = "somewhat difficult";
+		data = s.getBytes();
+		System.out.println(Ascii85.toAscii85(data));
+	}
+	
+}
