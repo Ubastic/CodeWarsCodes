@@ -4,8 +4,17 @@ public class MathEvaluator {
 
 	public static double calculate(String exp){
 		
+		//System.out.println("exp is: " + exp);
+		
 		//convert 2/((2+3)*4.33)--6 to 2 / ( ( 2 + 3 * 2) * ( 4.1 * 10 ) ) + 6
-		exp = trim(exp);
+		exp = exp.replace(" ","");
+		exp = exp.replaceAll("[\\D && [^\\.]]"," $0 ");
+		exp = exp.replaceAll("  ", " ");
+		exp = exp.replace(" - - ", " + ");
+		exp = exp.replace(" - + ", " - ");
+		exp = exp.replace(" + - ", " - ");
+		exp = exp.replace(" * - ", " * -");
+		exp = exp.replace(" / - ", " / -");
 		
 		boolean noMoreParentheses = false;
 		
@@ -32,8 +41,6 @@ public class MathEvaluator {
 				exp = exp.substring(0,indexA) + t + exp.substring(indexB + 1);
 			else
 				return Double.parseDouble(t);
-			
-			exp = trim(exp);
 			
 		}
 		
@@ -76,15 +83,18 @@ public class MathEvaluator {
 	public static String evaluate(String s){
 		s = s.replace("( ","");
 		s = s.replace(" )","");
-
+		//System.out.println(s);
 		String str = s.replace(" ","");
-
+		//System.out.println("s is: " + s);
 		String[] strParts = s.split(" ");
-
-		if(s.charAt(1) == '-')
-			s = s.substring(1,2) + s.substring(3);
-		else if(s.charAt(1) == '+')
-			s = s.substring(3);
+		
+		if(str.charAt(0) == '-'){
+			String temp = "";
+			for(int i = 0; i < strParts.length; i++)
+				temp += strParts[i];
+			System.out.println(temp);
+			return temp;
+		}
 		
 		for(int i = 0; i < strParts.length; i++){
 			if(strParts[i].equals("*")){
@@ -112,14 +122,14 @@ public class MathEvaluator {
 		for(int i = 0; i < strParts.length; i++)
 			s += strParts[i];
 		
+		//System.out.println("String before s: " + s);
+		
 		s = s.replaceAll("[\\D && [^\\.]]"," $0 ");
 		s = s.replaceAll("  ", " ");
 		
-		if(s.charAt(1) == '-')
-			s = s.substring(1,2) + s.substring(3);
-		else if(s.charAt(1) == '+')
-			s = s.substring(3);
-
+		//if(s.charAt(1) == '-');
+			//s = s.substring(1,2) + s.substring(3);
+		//System.out.println("String after s: " + s);
 		strParts = s.split(" ");
 		
 		for(int i = 0; i < strParts.length; i++){
@@ -146,21 +156,6 @@ public class MathEvaluator {
 		for(int i = 0; i < strParts.length; i++)
 			s += strParts[i];
 		return s;
-	}
-	
-	public static String trim(String exp){
-		exp = exp.replace(" ","");
-		exp = exp.replaceAll("[\\D && [^\\.]]"," $0 ");
-		exp = exp.replaceAll("  ", " ");
-		exp = exp.replace(" - - ", " + ");
-		exp = exp.replace(" - + ", " - ");
-		exp = exp.replace(" + - ", " - ");
-		exp = exp.replace(" * - ", " * -");
-		exp = exp.replace(" / - ", " / -");
-		exp = exp.replace(" / + ", " / ");
-		exp = exp.replace(" * + ", " * ");
-		exp = exp.replace(" + + ", " + ");
-		return exp;
 	}
 	
 }
