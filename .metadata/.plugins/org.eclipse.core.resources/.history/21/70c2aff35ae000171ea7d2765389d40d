@@ -1,0 +1,10 @@
+
+public class Main {
+
+	public static void main(String[] args){
+		
+		//System.out.println(MathEvaluator.calculate("2/((2+3)*4.33) - - 6"));
+		System.out.println(MathEvaluator.evaluate("2 + 3"));
+	}
+
+}
