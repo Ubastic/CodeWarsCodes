@@ -1,0 +1,55 @@
+//Solution for https://www.codewars.com/kata/527fde8d24b9309d9b000c4e/train/java
+
+public class BreakPieces {
+	
+	public static String[] process(String shape){
+		
+		String[] parts = shape.split("\n");
+		int width = 0;
+		for(int i = 0; i < parts.length; i++){
+			if(parts[i].length() > width)
+				width = parts[i].length();
+		}
+		int height = parts.length;
+		int[][] arr = new int[height][width];
+		for(int r = 0; r < height; r++){
+			int indexA = -1;
+			int indexB = -1;
+			for(int c = 0; c < parts[r].length(); c++){
+				if(parts[r].charAt(c) == '|'){
+					indexA = c;
+					break;
+				}
+			}
+			for(int c = parts[r].length() - 1; c >= 0; c--){
+				if(parts[r].charAt(c) == '|'){
+					indexB = c;
+					break;
+				}
+			}
+			for(int c = indexA + 1; c < indexB - 1; c++){
+				if(parts[r].charAt(c) == ' ')
+					arr[r][c] = 1;
+			}
+		}
+		
+		split(arr);
+		print(arr);
+		
+		return new String[0];
+	}
+	
+	public static ArrayList<Integer> split(int[][] arr){
+		
+	}
+	
+	public static void print(int[][] arr){
+		for(int i = 0; i < arr.length; i++){
+			String s = "";
+			for(int j = 0; j < arr[i].length; j++)
+				s += arr[i][j];
+			System.out.println(s);
+		}
+	}
+	
+}

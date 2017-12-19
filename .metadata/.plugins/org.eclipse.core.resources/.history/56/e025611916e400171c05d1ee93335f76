@@ -1,0 +1,11 @@
+//Solution for https://www.codewars.com/kata/527fde8d24b9309d9b000c4e/train/java
+
+public class BreakPieces {
+	
+	public static String[] process(String shape){
+		
+		return new String[0];
+		
+	}
+	
+}

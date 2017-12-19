@@ -1,0 +1,210 @@
+//Solution for https://www.codewars.com/kata/527fde8d24b9309d9b000c4e/train/java
+
+import java.util.ArrayList;
+
+public class BreakPieces {
+	
+	public static String[] process(String shape){
+		
+		String[] parts = shape.split("\n");
+		int width = 0;
+		for(int i = 0; i < parts.length; i++){
+			if(parts[i].length() > width)
+				width = parts[i].length();
+		}
+		int height = parts.length;
+		int[][] arr = new int[height][width];
+		for(int r = 0; r < height; r++){
+			int indexA = -1;
+			int indexB = -1;
+			for(int c = 0; c < parts[r].length(); c++){
+				if(parts[r].charAt(c) == '|'){
+					indexA = c;
+					break;
+				}
+			}
+			for(int c = parts[r].length() - 1; c >= 0; c--){
+				if(parts[r].charAt(c) == '|'){
+					indexB = c;
+					break;
+				}
+			}
+			for(int c = indexA + 1; c < indexB - 1; c++){
+				if(parts[r].charAt(c) == ' ')
+					arr[r][c] = 1;
+			}
+		}
+		print(arr);
+		ArrayList<int[][]> arrList = separate(arr);
+		for(int i = 0; i < arrList.size(); i++)
+			print(arrList.get(i));
+		//String[] returnArr = convert(arrList); 
+		
+		return new String[0];
+	}
+	
+	public static ArrayList<int[][]> separate(int[][] arr){
+		ArrayList<int[][]>  list = new ArrayList<int[][]>();
+		int[][] arrCopy = arr;
+		while(true){
+			int firstR = -1;
+			int firstC = -1;
+			boolean flag = false;
+			for(int r = 0; r < arr.length; r++){
+				for(int c = 0; c < arr[r].length; c++){
+					//System.out.println(r + " " + c);
+					if(arr[r][c] == 1){
+						firstR = r;
+						firstC = c;
+						flag = true;
+						break;
+					}
+				}
+				if(flag)
+					break;
+			}
+			if(firstR != -1 && firstC != -1)
+				break;
+			//System.out.println(firstR + " " + firstC);
+			int[][] tempArr = traverse(arr,firstR,firstC);
+			//print(tempArr);
+			tempArr = fill(tempArr,arrCopy);
+			list.add(tempArr);
+			arrCopy = remove(arrCopy,tempArr);
+		}
+		return list;
+	}
+	
+	public static int[][] traverse(int[][] arr, int r, int c){
+		
+		//up, right, down, traversal
+		int[][] arrA = new int[arr.length][arr[0].length];
+		arrA[r][c] = 1;
+		while(true){
+			if(arr[r - 1][c] == 1 && arrA[r - 1][c] == 0){
+				arrA[--r][c] = 1;
+			}
+			else if(arr[r][c + 1] == 1){
+				arrA[r][++c] = 1;
+			}
+			else if(arr[r + 1][c] == 1){
+				arrA[++r][c] = 1;
+			}
+			else break;
+		}
+		//down, left, up traversal
+		int[][] arrB = new int[arr.length][arr[0].length];
+		arrB[r][c] = 1;
+		while(true){
+			if(arr[r + 1][c] == 1 && arrB[r + 1][c] == 0){
+				arrB[++r][c] = 1;
+			}
+			else if(arr[r][c - 1] == 1){
+				arrB[r][--c] = 1;
+			}
+			else if(arr[r - 1][c] == 1){
+				arrB[--r][c] = 1;
+			}
+			else break;
+		}
+		
+		//print(arrA);
+		//print(arrB);
+		
+		return merge(arrA,arrB);
+	}
+	
+	public static int[][] merge(int[][] a, int[][] b){
+		int[][] arr = new int[a.length][a[0].length];
+		for(int i = 0; i < arr.length; i++)
+			for(int j = 0; j < arr[i].length; j++)
+				if(a[i][j] == 1 || b[i][j] == 1)
+					arr[i][j] = 1;
+		//print(arr);
+		return arr;
+	}
+	
+	public static int[][] fill(int [][] arr, int[][] origArr){
+		
+		//print(arr);
+		//top to bottom
+		int r = 0;
+		for(int c = 0; c < arr[r].length; c++){
+			for(r = 0; r < arr.length; r++){
+				if(arr[r][c] != 1)
+					arr[r][c] = 2;
+				else
+					break;
+			}
+			r = 0;
+		}
+		//bottom to top
+		r = arr.length - 1;
+		for(int c = 0; c < arr[r].length; c++){
+			for(r = arr.length - 1; r >= 0; r--){
+				if(arr[r][c] != 1)
+					arr[r][c] = 2;
+				else
+					break;
+			}
+			r = arr.length - 1;
+		}
+		
+		//left to right
+		for(r = 0; r < arr.length; r++)
+			for(int c = 0; c < arr[r].length; c++){
+				if(arr[r][c] != 1)
+					arr[r][c] = 2;
+				else
+					break;
+			}
+				
+		//right to left
+		for(r = 0; r < arr.length; r++)
+			for(int c = arr[r].length - 1; c >= 0; c--){
+				if(arr[r][c] != 1)
+					arr[r][c] = 2;
+				else
+					break;
+			}
+		
+		//print(arr);
+		
+		//flip
+		for(int i = 0; i < arr.length; i++)
+			for(int j = 0; j < arr[i].length; j++){
+				if(arr[i][j] == 0 && origArr[i][j] == 1)
+					arr[i][j] = 1;
+				else if(arr[i][j] == 2)
+					arr[i][j] = 0;
+			}
+		
+		//print(arr);
+		
+		return arr;
+	}
+	
+	public static int[][] remove(int[][] fromArr, int[][] toRemoveArr){
+		for(int i = 0; i < fromArr.length; i++)
+			for(int j = 0; j < fromArr[i].length; j++)
+				if(toRemoveArr[i][j] == 1)
+					fromArr[i][j] = 0;
+		//print(fromArr);
+		return fromArr;
+	}
+	
+	public static String[] convert(ArrayList<int[][]> arrList){
+		return new String[0];
+	}
+	
+	public static void print(int[][] arr){
+		for(int i = 0; i < arr.length; i++){
+			String s = "";
+			for(int j = 0; j < arr[i].length; j++)
+				s += arr[i][j];
+			System.out.println(s);
+		}
+		System.out.println();
+	}
+	
+}
