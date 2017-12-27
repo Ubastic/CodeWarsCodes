@@ -6,9 +6,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Interpreter {
-	public Double input(String input) {
+	public static Double input(String input) {
 		Deque<String> tokens = tokenize(input);
-		return null;
+		
+		while(tokens.size() > 0){
+			System.out.println(tokens.size());
+			String str = tokens.removeFirst();
+			System.out.println(str);
+			if(str.matches("[\\D&&[\\S]]{0}"))
+				System.out.println("works");
+		}
+		return 0.0;
 	}
 
 	private static Deque<String> tokenize(String input) {
