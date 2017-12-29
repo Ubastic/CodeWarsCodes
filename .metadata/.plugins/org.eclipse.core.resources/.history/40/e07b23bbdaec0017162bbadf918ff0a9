@@ -1,0 +1,39 @@
+
+public class Stack {
+
+	public static Node top;
+	
+	public Stack(){
+		top = null;
+	}
+	
+	public Stack(Node n){
+		top = n;
+	}
+	
+	public boolean isEmpty(){
+		if(top == null)
+			return true;
+		return false;
+	}
+	
+	public push(Node n){
+		if(this.isEmpty())
+			top = n;
+		else{
+			n.next = top;
+			top = n;
+		}
+	}
+	
+	public Node pop(){
+		if(this.isEmpty())
+			throw new NullPointerException();
+		else{
+			Node temp = top;
+			top = top.next;
+			return temp;
+		}
+	}
+	
+}

@@ -1,0 +1,8 @@
+//Solution for https://www.codewars.com/kata/52f78966747862fc9a0009ae/train/java
+public class Calc {
+
+	public double evaluate(String expr){
+		return 0;
+	}
+	
+}

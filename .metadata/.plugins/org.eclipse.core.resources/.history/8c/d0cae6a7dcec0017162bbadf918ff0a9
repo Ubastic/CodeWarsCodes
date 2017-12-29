@@ -1,0 +1,22 @@
+//Solution for https://www.codewars.com/kata/52f78966747862fc9a0009ae/train/java
+import java.util.regex.Pattern;
+
+public class Calc {
+
+	public double evaluate(String expr){
+		
+		Stack stk = new Stack();
+		String[] parts = expr.split(" ");
+		for(int i = 0; i < parts.length; i++){
+			if(Pattern.matches("//d+",parts[i]))
+				stk.push(new Node(parts[i]));
+			else if(parts[i].equals("+")){
+				double b = Double.parseDouble((stk.pop()).data);
+				double a = Double.parseDouble((stk.pop()).data);
+				Node n = new Node(Double.toString(a + b));
+				stk.push(n);
+			}
+		}
+	}
+	
+}
